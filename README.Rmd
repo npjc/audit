@@ -1,0 +1,45 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# audit
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
+An interactive application that ushers you through the inspection and analysis of your growth curve experiments.
+
+## Example
+
+Once you've installed audit, run the interactive applcation via: 
+
+```{r example, eval=FALSE}
+library(audit)
+run()
+```
+
+Or simply:
+
+```{r example2, eval=FALSE}
+audit::run()
+```
+
+## Installation
+
+Audit is currently only available on github and can be installed like any other
+remote r package:
+
+``` r
+remotes::install_github("npjc/audit")
+```
