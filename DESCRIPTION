@@ -22,8 +22,9 @@ Imports:
     readbioscreen (>= 0.0.1),
     mtpview (>= 0.0.2),
     growr (>= 0.0.0.9000),
-    DT
-Remotes: 
+    DT,
+    tidyr (>= 0.8.3.9000)
+Remotes:  
     npjc/readcg12,
     npjc/readgp1,
     npjc/readyg,
@@ -31,6 +32,7 @@ Remotes:
     npjc/mtpview1,
     npjc/mtpview,
     npjc/growr,
-    tidyverse/ggplot2
+    tidyverse/ggplot2,
+    tidyverse/tidyr
 URL: https://github.com/npjc/audit
 BugReports: https://github.com/npjc/audit/issues
