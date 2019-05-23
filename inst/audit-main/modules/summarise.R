@@ -38,7 +38,7 @@ summariseTabContents <- function(input, output, session, inputData) {
     observeEvent(input$estimationMethodInfo, estimationMethodInfoAlert())
 
     groups <- reactive({
-        unlist(stringr::str_split(req(input$groups), '\n'))
+        unlist(stringr::str_split(input$groups, '\n'))
     })
 
     summarisedData <- reactive({
@@ -50,6 +50,8 @@ summariseTabContents <- function(input, output, session, inputData) {
     })
 
     outputData <- reactive({
+        if (groups() == "")
+            return(summarisedData())
         growr:::add_groupings(summarisedData(), groups(), input$nrow, input$ncol)
     })
 

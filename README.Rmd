@@ -22,14 +22,9 @@ An interactive application that ushers you through the inspection and analysis o
 
 ## Example
 
-Once you've installed audit, run the interactive applcation via: 
+![alt text](eg.gif)
 
-```{r example, eval=FALSE}
-library(audit)
-run()
-```
-
-Or simply:
+To start a new AUDIT session:
 
 ```{r example2, eval=FALSE}
 audit::run()
@@ -43,3 +38,31 @@ remote r package:
 ``` r
 remotes::install_github("npjc/audit")
 ```
+
+#### Step-by-step
+
+1. Install [R][] by downloading the appropriate package for your operating system from [cran][] and following the onscreen instructions.
+2. Install [Rstudio][] (Optional), a development environment for R by downloading the appropriate image for your operating system from Rstudio's [download page][] and follow the onscreen instructions.
+3. If this is a new R installation you will need to download some packages before being able to install audit. To do this, open R / Rstudio and enter the line below into the console. Follow the onscreen instructions.
+
+```r
+install.packages(c("devtools", "tidyverse", "remotes"))
+```
+4. Install AUDIT and its dependencies by entering the line below into the console
+
+``` r
+remotes::install_github("npjc/audit")
+```
+
+5. To run AUDIT enter the line below at the console. This will open a new session in your default web browser.
+
+```r
+audit::run()
+```
+
+
+[shiny]: http://shiny.rstudio.com
+[R]: https://cran.r-project.org
+[cran]: https://cran.r-project.org
+[Rstudio]: https://www.rstudio.com/products/rstudio
+[download page]: https://www.rstudio.com/products/rstudio/download/#download
