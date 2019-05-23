@@ -21,7 +21,8 @@ Imports:
     readyg (>= 0.1.0),
     readbioscreen (>= 0.0.1),
     mtpview (>= 0.0.2),
-    growr (>= 0.0.0.9000)
+    growr (>= 0.0.0.9000),
+    DT
 Remotes: 
     npjc/readcg12,
     npjc/readgp1,
