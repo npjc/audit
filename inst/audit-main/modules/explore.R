@@ -30,8 +30,11 @@ exploreContents <- function(input, output, session, summary) {
 
 
     output$experimentGlance <- renderPlot({
-        mtpview1::mtp_ggplot(summary(),aes(plate = plate, well = well)) +
-            mtpview1::mtp_spec_96well() +
+        d <- summary()
+        n <- NROW(dplyr::distinct(dplyr::ungroup(d), well))
+
+        mtpview1::mtp_ggplot(d,aes(plate = plate, well = well)) +
+            mtp_spec_impl(n) +
             mtpview1::geom_footprint() +
             # mtpview1::geom_notched_border() +
             mtpview1::geom_col_label() +
@@ -44,3 +47,13 @@ exploreContents <- function(input, output, session, summary) {
 
 
 # module helpers ----------------------------------------------------------
+
+mtp_spec_impl <- function(n) {
+    f <- switch(as.character(n),
+                '24' = mtpview1::mtp_spec_24well,
+                '48' = mtpview1::mtp_spec_48well,
+                '96' = mtpview1::mtp_spec_96well,
+                '384' = mtpview1::mtp_spec_384well,
+                '1536' = mtpview1::mtp_spec_1536well)
+    return(f())
+}
