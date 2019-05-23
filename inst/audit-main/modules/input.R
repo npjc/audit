@@ -21,16 +21,16 @@ autoFileInput <- function(id) {
 
 autoFile <- function(input, output, session) {
     options(shiny.maxRequestSize = 30*1024^2) # max upload to 30mb
-    
+
     observeEvent(input$filesInfo, filesInfoAlert())
-    
+
     userFiles <- reactive({
         validate(need(input$files, message = 'start by uploading file(s)')) # If no files do nothing
         d <- input$files
         d <- add_identities(d)
         add_experiment_key(d)
     })
-    
+
     datafile <- reactive({
         # only files for which we guessed the format?
         d <- userFiles()
@@ -39,12 +39,12 @@ autoFile <- function(input, output, session) {
         out <- dplyr::bind_rows(by_run)
         out
     })
-    
+
     output$messages <- renderUI({
         d <- dplyr::select(userFiles(), name, size, format, class, run)
         tagList(purrr::pmap(d, upload_message))
     })
-    
+
     return(datafile)
 }
 
@@ -88,10 +88,10 @@ add_experiment_key <- function(d) {
 #' key_experiment("common-run.txt", sprintf("design%s_design.txt", 1:3))
 #' key_experiment(sprintf("run-%s.txt", 1:10), sprintf("design-%s", 11:20))
 key_experiment <- function(measures_files = NULL, design_files = NULL, longer = TRUE) {
-    
+
     lm <- length(measures_files)
     ld <- length(design_files)
-    
+
     if (lm == 0 & ld == 0) {
         return(tibble::tibble())
     }
@@ -110,18 +110,18 @@ key_experiment <- function(measures_files = NULL, design_files = NULL, longer = 
     if (lm > 1 & ld > 1) {
         mkeys <- as_key(measures_files)
         dkeys <- as_key(design_files)
-        
+
         measures_tbl <- tibble::tibble(k = mkeys, m = measures_files)
         designs_tbl <- tibble::tibble(k = dkeys, d = design_files)
-        
+
         out <- dplyr::full_join(measures_tbl, designs_tbl, by = "k")
     }
     d <- tibble::tibble(
-        run = out[[1]], 
+        run = out[[1]],
         measures = out[[2]],
         design = out[[3]]
     )
-    
+
     if (longer) {
         d <- tidyr::pivot_longer(d, -run, names_to = "class", values_to = "name")
     }
@@ -176,13 +176,13 @@ join_run <- function(d) {
         out <- dplyr::mutate(out, run = unique(d$run))
         return(out)
     }
-    
+
     dd <- dplyr::filter(d, class == "design")
     out_design <- do.call(dd$read_fxn, c(file = dd$datapath, dd$read_fxn_opts[[1]]))
-    
+
     dm <- dplyr::filter(d, class == "measures")
     out_measures <- do.call(dm$read_fxn, c(file = dm$datapath, dm$read_fxn_opts[[1]]))
-    
+
     by <- intersect(names(out_design), names(out_measures))
     joined <- dplyr::left_join(out_measures, out_design, by = by)
     dplyr::mutate(joined, run = unique(d$run))
@@ -216,7 +216,7 @@ format_message <- function(file, format) {
 }
 
 upload_message <- function(name, size, format, class, run) {
-    
+
     trunc_name <- stringr::str_trunc(name, width = 40, side = "center")
     was_guessed <- !is.na(format)
 
@@ -224,13 +224,13 @@ upload_message <- function(name, size, format, class, run) {
         size_nice <- paste(signif(size / 1E3, 3), "Kb")
     if (size > 1E5)
         size_nice <- paste(signif(size / 1E6, 3), "Mb")
-    
+
     if (was_guessed) {
         s <- '
             <i class="fa fa-check text-success"></i>
-            Parsed <strong>{class}</strong> file 
+            Parsed <strong>{class}</strong> file
             <span style="text-decoration: underline;">{trunc_name}</span>
-            <span style = "opacity:0.5;">({format}, {size_nice})</span> 
+            <span style = "opacity:0.5;">({format}, {size_nice})</span>
             and added to run: "{run}".
             <br>
             '
@@ -249,7 +249,7 @@ upload_message <- function(name, size, format, class, run) {
 
 
 filesInput <- function(inputId) {
-    lbl <- action_link_lbl(inputId = paste0(inputId, 'Info'), 
+    lbl <- action_link_lbl(inputId = paste0(inputId, 'Info'),
                            label = 'Measures & Design Data')
     fileInput(inputId, label = lbl, multiple = TRUE)
 }
@@ -257,41 +257,26 @@ filesInput <- function(inputId) {
 # styled action link for use in input label
 action_link_lbl <- function(inputId, label) {
     labelList <- tagList(
-        span(label, style = 'text-decoration: none;opacity: 1;color: black;'), 
+        span(label, style = 'text-decoration: none;opacity: 1;color: black;'),
         span('?', style = "opacity:0.4;font-weight: 200;")
     )
-    
+
     actionLink(inputId, label = labelList)
 }
 
 
 filesInfoAlert <- function() {
-#     h <- '<p>Input one or more files.</p>
-#     <br/>
-# <p>A meaures file can be in cg12, gp1, yg, or bioscreen. Design files can be in <a href="https://cran.r-project.org/web/packages/plater/vignettes/plater-basics.html" target="_blank">plater</a> or generic .csv format.</p>
-# <br/>
-# <p>Design files will first be matched by name if they contain a "_design" suffix. For example if the following 4 files are uploaded they will be joined into 2 runs:  </p>
-# <pre>
-# run1.txt & run1_design.csv
-# run2.txt & run2_design.csv
-# </pre>
-# <p>If no suffix and only design file, will join onto <em>each</em> measures file. This is useful for scenarios where the same design is reused often.</p>
-# <br/>
-# <p>If there are multiple design files and one or more cannot be matched they will be placed into their own run. This is useful for comparing multiple desings.</p>
-# <br/>
-# <p>Some models assume that the y values are log-ratio transformed measures when computing summary metrics. For example, extracting the growth rate from an exponential fit or maximum growth rate from a gompertz fit.</p>'
-#     
-    h <- shiny::includeMarkdown('modal-docs/filesInfo.md')
-    
+    h <- shiny::includeMarkdown(file.path('docs','filesInfo.md'))
+
     InfoAlert("Measures & Design Data", h)
 }
 
 InfoAlert <- function(title, htmltext) {
-    
+
     shinyalert(title = title,
                text = htmltext,
                type = "info",
                closeOnClickOutside = TRUE,
-               showConfirmButton = FALSE, 
+               showConfirmButton = FALSE,
                html = TRUE)
 }
