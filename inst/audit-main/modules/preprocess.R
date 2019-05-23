@@ -52,7 +52,7 @@ preprocessTabContents <- function(input, output, session, datafile) {
     observeEvent(input$backgroundInfo, backgroundInfoAlert())
     observeEvent(input$calibrationInfo, calibrationInfoAlert())
     observeEvent(input$preprocessGo, {
-        message('preprocess button clicekd')
+        message('preprocess button clicked')
         out <- dplyr::group_by(datafile(), run, plate, well)
         out <- dplyr::mutate(out, measures_pp = preprocessFxn()(measure))
         outputData(out)

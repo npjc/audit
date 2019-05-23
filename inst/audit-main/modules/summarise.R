@@ -22,8 +22,9 @@ summariseTabContentsUI <- function(id) {
             numericInput(ns('nrow'), 'rows (n) of grouping plate?', value = 8, min = 1, max = 48, step = 1),
             numericInput(ns('ncol'), 'col (n) of grouping plate?', value = 12, min = 1, max = 48, step = 1)
             ),
-        box(
-            tableOutput(ns('parsed_groupings'))
+        box(width = 12,
+            # tableOutput(ns('parsed_groupings')),
+            DT::dataTableOutput(ns('table'))
         )
     )
 
@@ -40,23 +41,30 @@ summariseTabContents <- function(input, output, session, inputData) {
         unlist(stringr::str_split(req(input$groups), '\n'))
     })
 
-    output$parsed_groupings <- renderTable({
-        l <- growr:::parse_groupings(groups(), input$nrow, input$ncol)
-        d <- purrr::map_df(l, tibble::as_tibble)
-        d
-    })
-
-    output$table <- DT::renderDataTable({
+    summarisedData <- reactive({
         d <- dplyr::group_by(inputData(), run, plate, well)
         d <- dplyr::summarise(d,
-                              metrics = list(growr::summarise_fit(runtime, measure_pp,
-                                                   method = input$estimationMethod)))
-        tidyr::unnest(d, cols(metrics))
-    }, options = list(pageLength = 5, dom = "tp"), rownames = FALSE)
+                              metrics = list(growr::summarise_fit(runtime, measures_pp,
+                                                                  method = input$estimationMethod)))
+        tidyr::unnest(d, cols = c(metrics))
+    })
 
     outputData <- reactive({
-        growr:::add_groupings(inputData(), groups(), input$nrow, input$ncol)
+        growr:::add_groupings(summarisedData(), groups(), input$nrow, input$ncol)
     })
+
+    # display section
+
+    # output$parsed_groupings <- renderTable({
+    #     l <- growr:::parse_groupings(groups(), input$nrow, input$ncol)
+    #     d <- purrr::map_df(l, tibble::as_tibble)
+    #     d
+    # })
+
+
+    output$table <- DT::renderDataTable({
+        outputData()
+    }, options = list(pageLength = 5, dom = "tp"), rownames = FALSE)
 
     return(outputData)
 }

@@ -13,14 +13,23 @@ Imports:
     shiny,
     shinydashboard,
     plater,
-    ggplot2,
-    shinyalert
-Remotes:
+    ggplot2 (>= 3.1.1.9000),
+    shinyalert,
+    mtpview1 (>= 0.0.2),
+    readcg12 (>= 0.0.1),
+    readgp1 (>= 0.1.0),
+    readyg (>= 0.1.0),
+    readbioscreen (>= 0.0.1),
+    mtpview (>= 0.0.2),
+    growr (>= 0.0.0.9000)
+Remotes: 
     npjc/readcg12,
     npjc/readgp1,
     npjc/readyg,
     npjc/readbioscreen,
+    npjc/mtpview1,
     npjc/mtpview,
-    npjc/growr
+    npjc/growr,
+    tidyverse/ggplot2
 URL: https://github.com/npjc/audit
 BugReports: https://github.com/npjc/audit/issues
