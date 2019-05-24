@@ -135,3 +135,47 @@ intended. I use the same underlying tools for my own work. I however
 make absolutely no guarantees about the use and or results of AUDIT and
 its associated software. I therefore encourage you to validate your
 assumptions and check your work.
+
+### Alternatives and Prior Work
+
+There are a number of other tools that may provide similar and/or other
+useful functionality (in no particular order):
+
+Interactive Applications:
+
+  - [PROPHECY](http://prophecy.lundberg.gu.se/Main.aspx?Mainmnu=PRECOG):
+    Described in <https://doi.org/10.1093/nar/gki126>
+  - [PRECOG](http://precog.lundberg.gu.se/Pages/Content/Precog):
+    Described in <https://doi.org/10.1186/s12859-016-1134-2>
+  - [bgfit](http://sels.tecnico.ulisboa.pt/bgfit/): Described in
+    <https://doi.org/10.1186/1471-2105-14-283>
+  - [ACCESS](https://doi.org/10.1007/978-1-61779-173-4_15): Described in
+    <https://doi.org/10.1007/978-1-61779-173-4_15>
+  - [YODA](http://kaeberleinlab.org/yoda/): Described in
+    <https://doi.org/10.1186/1471-2105-11-141>
+  - [fitderiv](http://swainlab.bio.ed.ac.uk/software/fitderiv/):
+    Described in <https://doi.org/10.1038/ncomms13766>
+
+Software Packages:
+
+  - [growthcurver](https://CRAN.R-project.org/package=growthcurver) R
+    package
+  - [plater](https://CRAN.R-project.org/package=plater) R package
+  - [Colonyzer](https://doi.org/10.1186/1471-2105-11-287)
+  - [agce](https://CRAN.R-project.org/package=agce) R package *ARCHIVED*
+  - [drc](https://CRAN.R-project.org/package=drc) R package described in
+    <https://doi.org/10.18637/jss.v012.i05>
+  - [FitSearch](http://fitsearch.kaist.ac.kr) described in
+    <https://doi.org/10.1186/1471-2164-14-S1-S6>
+  - [getgrowth](https://pypi.org/project/getgrowth/) Python package
+  - [grofit](https://CRAN.R-project.org/package=grofit) R package
+    *ARCHIVED*, described in <https://doi.org/10.18637/jss.v033.i07>
+  - [growcurves](https://CRAN.R-project.org/package=growcurves) R
+    package, described in <https://doi.org/10.18637/jss.v057.i03>
+  - [growthcurver](https://CRAN.R-project.org/package=growthcurver) R
+    package, described in <https://doi.org/10.1186/s12859-016-1016-7>
+  - [growthmodels](https://CRAN.R-project.org/package=growthmodels) R
+    package
+  - [pygrowthmodels](https://pypi.org/project/pygrowthmodels/) Python
+    package
+  - odelay described in <http://dx.doi.org/10.3791/4018>
