@@ -82,15 +82,6 @@ AUDIT is really just an interactive interface to multiple modules. These modules
 - [growr][]
 - [mtpview][] (and as a current workaround to known issue [mtpview1][])
 
-
-[readcg12]: https://github.com/npjc/readcg12
-[readgp1]: https://github.com/npjc/readgp1
-[readyg]: https://github.com/npjc/readyg
-[readbioscreen]: https://github.com/npjc/readbioscreen
-[growr]: https://github.com/npjc/growr
-[mtpview]: https://github.com/npjc/mtpview
-[mtpview1]: https://github.com/npjc/mtpview1
-
 ### If you find a bug
 
 As you use AUDIT, if you find bugs, file an issue (ideally with a reproducible example) at <https://github.com/npjc/audit/issues>. If you are unsure how to make your example reproducible: provide input data used and a description of the steps used or a link to a video demonstrating it.
@@ -103,6 +94,30 @@ The only change from previous communication is that mptview currently exists as 
 
 The explore section is tagged as `experimental` as I will add new views beyond what is already there. Once I have added all the views I will remove the experimental tag. 
 
+### Additional Functionality Elsewhere
+
+Earlier versions of this tool were used as prototypes and made publically available through the  [shinyapps.io][] service. These are still freely accesible via web browser (no installation needed).
+
+- [cg12report][] provides the ability to download a .pdf report of cg12 formatted data
+
+- [audit-lite][] provides interactive plate view where you can add reference line plots onto all wells of the plate (powered by [d3][] via [r2d3][]).
+
 ### Absolutely No Guarantees
 
 I have tried my very hardest to ensure that the software performs as intended. I use the same underlying tools for my own work. I however make absolutely no guarantees about the use and or results of AUDIT and its associated software. I therefore encourage you to validate your assumptions and check your work.
+
+
+[readcg12]: https://github.com/npjc/readcg12
+[readgp1]: https://github.com/npjc/readgp1
+[readyg]: https://github.com/npjc/readyg
+[readbioscreen]: https://github.com/npjc/readbioscreen
+[growr]: https://github.com/npjc/growr
+[mtpview]: https://github.com/npjc/mtpview
+[mtpview1]: https://github.com/npjc/mtpview1
+[shinyapps.io]: https://shinyapps.io
+[cg12report]: https://nicolascoutin.shinyapps.io/cg12report/
+[audit-lite]: https://nicolascoutin.shinyapps.io/audit-lite/
+[d3]: https://d3js.org
+[r2d3]: https://github.com/rstudio/r2d3
+ 
+ 

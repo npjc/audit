@@ -112,6 +112,22 @@ The explore section is tagged as `experimental` as I will add new views
 beyond what is already there. Once I have added all the views I will
 remove the experimental tag.
 
+### Additional Functionality Elsewhere
+
+Earlier versions of this tool were used as prototypes and made
+publically available through the [shinyapps.io](https://shinyapps.io)
+service. These are still freely accesible via web browser (no
+installation needed).
+
+  - [cg12report](https://nicolascoutin.shinyapps.io/cg12report/)
+    provides the ability to download a .pdf report of cg12 formatted
+    data
+
+  - [audit-lite](https://nicolascoutin.shinyapps.io/audit-lite/)
+    provides interactive plate view where you can add reference line
+    plots onto all wells of the plate (powered by [d3](https://d3js.org)
+    via [r2d3](https://github.com/rstudio/r2d3)).
+
 ### Absolutely No Guarantees
 
 I have tried my very hardest to ensure that the software performs as
