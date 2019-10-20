@@ -59,7 +59,7 @@ body <- dashboardBody(
                 summariseTabContentsUI("summarised")
                 ),
         tabItem(tabName = "exp",
-                exploreContentsUI("explore")
+                fluidRow(exploreContentsUI("explore"))
         ),
         tabItem(tabName = "out",
                 fluidRow(

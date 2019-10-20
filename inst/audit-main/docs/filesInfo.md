@@ -2,7 +2,7 @@ Input one or more files. The parser will guess the file format and file type of 
 
 <br/>
 
-**Meaures** file(s) can be in [cg12][], [gp1][], [yg][], or [bioscreen][]. 
+**Meaures** file(s) can be in [cg12][], [gp1][], [yg][], or [bioscreen][] format. 
 
 <br/>
 

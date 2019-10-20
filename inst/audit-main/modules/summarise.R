@@ -1,5 +1,3 @@
-library(growr)
-
 # UI ----------------------------------------------------------------------
 
 summariseTabContentsUI <- function(id) {
@@ -180,12 +178,12 @@ summarise_fit_switch <- function(d, method = "smooth.spline", ...) {
                 "manual" = growr::fit_nls
     )
 
-    errlist = list(model = tibble(fail = TRUE),
-                   components = tibble(fail = TRUE),
-                   observations = tibble(fail = TRUE))
+    errlist = list(model = tibble::tibble(fail = TRUE),
+                   components = tibble::tibble(fail = TRUE),
+                   observations = tibble::tibble(fail = TRUE))
 
 
-    safe_f <- possibly(f, otherwise = errlist, quiet = TRUE)
+    safe_f <- purrr::possibly(f, otherwise = errlist, quiet = TRUE)
 
     d <- dplyr::summarise(d, fit = list(safe_f(runtime, measure, ...)))
     d <- dplyr::ungroup(d)
@@ -283,8 +281,8 @@ fitted_plot <- function(x) {
     plot_data <- dplyr::select(x, -model, -components)
     plot_data <- tidyr::unnest(plot_data, cols = c(observations))
     plot_data <-  dplyr::mutate(plot_data,
-                                ymin = if_else(y >= .fitted, .fitted, y),
-                                ymax = if_else(y >= .fitted, y, .fitted)
+                                ymin = dplyr::if_else(y >= .fitted, .fitted, y),
+                                ymax = dplyr::if_else(y >= .fitted, y, .fitted)
     )
 
     ggplot(plot_data, aes(x = x)) +
