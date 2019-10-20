@@ -4,6 +4,7 @@ library(readcg12)
 library(readyg)
 library(readbioscreen)
 library(readr)
+library(stringr)
 
 
 # UI ----------------------------------------------------------------------
@@ -12,6 +13,14 @@ autoFileInput <- function(id) {
     ns <- NS(id)
     tagList(
         filesInput(ns("files")),
+        p("or load example data: ",
+            actionLink(ns("exampleDataLink_cs1"), "case study 1"), ",",
+            actionLink(ns("exampleDataLink_cg12"), "cg12"), ",",
+            actionLink(ns("exampleDataLink_gp1"), "gp1"), ",",
+            actionLink(ns("exampleDataLink_yg"), "yg"), ",",
+            actionLink(ns("exampleDataLink_bs"), "bioscreen")
+        ),
+        # verbatimTextOutput(ns("egData")),
         shiny::tags$div(style = 'height: 230px; overflow-y: scroll', uiOutput(ns("messages")))
         )
 }
@@ -22,23 +31,107 @@ autoFileInput <- function(id) {
 autoFile <- function(input, output, session) {
     options(shiny.maxRequestSize = 30*1024^2) # max upload to 30mb
 
+    inputFiles <- reactiveVal(value = NULL)
+
     observeEvent(input$filesInfo, filesInfoAlert())
 
+    # inputFiles <- reactive({
+    #     validate(need(input$files, message = 'start by uploading file(s)')) # If no files do nothing
+    #     input$files
+    # })
+
+    observeEvent(input$files, {
+        if (!is.null(input$files))
+            inputFiles(input$files)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+    observeEvent(input$exampleDataLink_cs1, {
+        files <- list.files("example-data", full.names = TRUE)
+        files <- stringr::str_subset(files, "cs1")
+        d <- tibble::tibble(
+            name = basename(files),
+            size = file.size(files),
+            datapath = files
+        )
+        inputFiles(d)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+    observeEvent(input$exampleDataLink_bs, {
+        files <- list.files("example-data", full.names = TRUE)
+        files <- stringr::str_subset(files, "bioscreen")
+        d <- tibble::tibble(
+            name = basename(files),
+            size = file.size(files),
+            datapath = files
+        )
+        inputFiles(d)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+    observeEvent(input$exampleDataLink_cg12, {
+        files <- list.files("example-data", full.names = TRUE)
+        files <- stringr::str_subset(files, "cg12")
+        d <- tibble::tibble(
+            name = basename(files),
+            size = file.size(files),
+            datapath = files
+        )
+        inputFiles(d)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+    observeEvent(input$exampleDataLink_gp1, {
+        files <- list.files("example-data", full.names = TRUE)
+        files <- stringr::str_subset(files, "gp1")
+        d <- tibble::tibble(
+            name = basename(files),
+            size = file.size(files),
+            datapath = files
+        )
+        inputFiles(d)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+    observeEvent(input$exampleDataLink_yg, {
+        files <- list.files("example-data", full.names = TRUE)
+        files <- stringr::str_subset(files, "yg")
+        d <- tibble::tibble(
+            name = basename(files),
+            size = file.size(files),
+            datapath = files
+        )
+        inputFiles(d)
+    }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
     userFiles <- reactive({
-        validate(need(input$files, message = 'start by uploading file(s)')) # If no files do nothing
-        d <- input$files
+        validate(need(inputFiles(), message = 'start by uploading file(s)')) # If no files do nothing
+        d <- inputFiles()
         d <- add_identities(d)
         add_experiment_key(d)
     })
 
-    datafile <- reactive({
+    by_run <- reactive({
+        validate(need(userFiles(), message = 'start by uploading file(s)')) # If no files do nothing
         # only files for which we guessed the format?
         d <- userFiles()
         by_run <- dplyr::group_split(d, run)
         by_run <- purrr::map(by_run, join_run)
-        out <- dplyr::bind_rows(by_run)
+        by_run
+    })
+
+    datafile <- reactive({
+        out <- dplyr::bind_rows(by_run())
         out
     })
+
+    # output$egData <- renderText({
+    #     # # file.path('docs','estimationMethodInfo.md')
+    #     # files <- list.files("example-data", full.names = TRUE)
+    #     # # head(d)
+    #     # data.frame(
+    #     #     name = basename(files),
+    #     #     size = file.size(files),
+    #     #     datapath = files
+    #     # )
+    #     str(inputFiles())
+    # })
 
     output$messages <- renderUI({
         d <- dplyr::select(userFiles(), name, size, format, class, run)

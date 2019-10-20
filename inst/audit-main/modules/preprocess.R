@@ -52,9 +52,10 @@ preprocessTabContents <- function(input, output, session, datafile) {
     observeEvent(input$backgroundInfo, backgroundInfoAlert())
     observeEvent(input$calibrationInfo, calibrationInfoAlert())
     observeEvent(input$preprocessGo, {
-        message('preprocess button clicked')
+        # message('preprocess button clicked')
         out <- dplyr::group_by(datafile(), run, plate, well)
         out <- dplyr::mutate(out, measures_pp = preprocessFxn()(measure))
+        out <- dplyr::ungroup(out)
         outputData(out)
         shinyalert(text = 'applied preprocesssing to experiment.',type = 'success')
     }, ignoreNULL = TRUE, ignoreInit = TRUE)
@@ -72,9 +73,11 @@ preprocessTabContents <- function(input, output, session, datafile) {
     })
 
     dataSubset <- reactive({
-        validate(need(input$table_rows_selected, message = "select one or more wells to preview from the 'Wells' table."))
+        validate(
+            need(input$table_rows_selected, message = "select one or more wells to preview from the 'Wells' table.")
+            )
         filter <- distinctWells()[input$table_rows_selected,]
-        subset <- dplyr::semi_join(datafile(), filter)
+        subset <- dplyr::semi_join(datafile(), filter, by = c("run", "plate", "well"))
         dplyr::group_by(subset, run, plate, well)
     })
 

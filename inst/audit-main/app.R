@@ -63,16 +63,24 @@ body <- dashboardBody(
         ),
         tabItem(tabName = "out",
                 fluidRow(
-                    box(
-                        title = tagList(span(icon("filter"), style = 'opacity:0.3;'), span("Summarise")),
-                        column(6,
+                    box(width = 12,
+                        title = tagList(span(icon("download"), style = 'opacity:0.3;'), span("Output")),
+                        column(4,
                                helpText("Tidied and preprocessed measures data"),
-                               downloadObjUI(id = "download1")
+                               downloadObjUI(id = "download1"),
+                            helpText("one row per measurement")
                                ),
-                        column(6,
-                               helpText("Summarised data (one row per well per group)"),
-                               downloadObjUI(id = "download2")
-                               )
+                        column(4,
+                               helpText("Summary Metrics data"),
+                               downloadObjUI(id = "download2"),
+                               helpText("one row per well (per plate, per run)")
+                               ),
+                        column(4,
+                               helpText("Model Quality data (fit quality and params)"),
+                               downloadObjUI(id = "download3"),
+                               helpText("one row per well (per plate, per run)")
+                        )
+
                     )
                 )
             )
@@ -90,10 +98,29 @@ server <- function(input, output, session) {
     experiment <- callModule(experimentBox, "experiment", datafile)
     viewbox <- callModule(quickviewBox, "viewbox", experiment, datafile)
     preprocess <- callModule(preprocessTabContents, 'preprocess', datafile)
+
     summarised <- callModule(summariseTabContents, 'summarised', preprocess)
+
+    model_data <- reactive({
+        d <- summarised()
+        d <- dplyr::select(d, -components, -observations)
+        d <- tidyr::unnest(d, cols = c(model))
+    })
+    components_data <- reactive({
+        d <- summarised()
+        d <- dplyr::select(d, -model, -observations)
+        d <- tidyr::unnest(d, cols = c(components))
+    })
+    # observations_data <- reactive({
+    #     d <- summarised()
+    #     d <- dplyr::select(d, -model, -components)
+    #     d <- tidyr::unnest(d, cols = c(observations))
+    # })
+
     callModule(exploreContents, 'explore', summarised)
     callModule(downloadObj, id = "download1", data = preprocess, "measures-data")
-    callModule(downloadObj, id = "download2", data = summarised, "summarised-data")
+    callModule(downloadObj, id = "download2", data = components_data, "summary-metrics-data")
+    callModule(downloadObj, id = "download3", data = model_data, "fit-quality-stats")
 
     output$preprocesstbl <- renderTable({
         head(preprocess())
