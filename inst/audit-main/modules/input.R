@@ -1,12 +1,3 @@
-library(plater)
-library(readgp1)
-library(readcg12)
-library(readyg)
-library(readbioscreen)
-library(readr)
-library(stringr)
-
-
 # UI ----------------------------------------------------------------------
 
 autoFileInput <- function(id) {

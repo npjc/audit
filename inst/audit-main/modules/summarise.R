@@ -257,7 +257,7 @@ startValuesInfoAlert <- function() {
 
 InfoAlert <- function(title, htmltext) {
 
-    shinyalert(title = title,
+    shinyalert::shinyalert(title = title,
                text = htmltext,
                type = "info",
                closeOnClickOutside = TRUE,

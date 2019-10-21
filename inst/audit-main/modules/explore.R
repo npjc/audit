@@ -1,9 +1,3 @@
-# library(mtpview1)
-# library(dplyr)
-# library(tidyr)
-# library(shiny)
-# library(mtpview1)
-
 # UI ----------------------------------------------------------------------
 
 exploreContentsUI <- function(id) {

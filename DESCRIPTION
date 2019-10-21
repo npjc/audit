@@ -1,12 +1,12 @@
 Package: audit
 Title: Shiny Application to Help Audit Your Growth Curves
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: person("Nicolas", "Coutin", , "nicolas.coutin@gmail.com", c("aut", "cre"), comment = c(ORCID = "0000-0001-9336-226X"))
 Maintainer: Nicolas Coutin <nicolas.coutin@gmail.com>
 Description: This package provides a shiny application that ushers you through 
     interactive analysis of growth curve experiments. Automated Usher for Data 
     Inspection and Tidying (AUDIT) for Growth Curves.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.6.0)
@@ -28,7 +28,10 @@ Imports:
     mtputils (>= 0.1.0),
     dplyr,
     stringr,
-    readr
+    readr,
+    rlang,
+    crayon,
+    glue
 Remotes: 
     npjc/readcg12,
     npjc/readgp1,

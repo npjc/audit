@@ -3,9 +3,17 @@
 ## CRAN dependencies
 library(shiny)
 library(shinydashboard)
-library(shinyalert)
-library(ggplot2)
 library(plater)
+library(ggplot2)
+library(shinyalert)
+library(DT)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(readr)
+library(rlang)
+library(crayon)
+library(glue)
 
 ## remotes and local dependencies
 library(readcg12)
@@ -22,6 +30,7 @@ source(file.path("modules","output.R"))
 library(mtpview1)
 library(mtpview)
 library(growr)
+library(mtputils)
 
 # 01 - UI -----------------------------------------------------------------
 

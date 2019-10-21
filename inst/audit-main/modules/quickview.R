@@ -17,11 +17,11 @@ quickviewBoxUI <- function(id) {
 # SERVER ------------------------------------------------------------------
 
 quickviewBox <- function(input, output, session, experiment, datafile) {
-    
+
     selectedData <- reactive({
         dplyr::semi_join(datafile(), experiment(), by = "run")
     })
-    
+
     output$preview <- renderUI({
         d <- selectedData()
         # by_run <- dplyr::group_split(d, run)
@@ -31,12 +31,12 @@ quickviewBox <- function(input, output, session, experiment, datafile) {
         l <- purrr::map(by_plate, box_plate)
         tagList(l)
     })
-    
+
     out <- reactive({
-        
+
         experiment()
     })
-    
+
     return(out)
 }
 
@@ -46,15 +46,15 @@ quickviewBox <- function(input, output, session, experiment, datafile) {
 mtpview_auto_ui <- function(d) {
     run_name <- dplyr::pull(dplyr::distinct(d, run), run)
     title <- tagList(span(icon("eye"), style = 'opacity:0.3;'), span(run_name))
-    
+
     tabBox(
-        title = title, width = 12, 
-        tabPanel("plot", 
+        title = title, width = 12,
+        tabPanel("plot",
                  renderPlot({
-                     mtp_plot(dplyr::rename(d, x = runtime, y = measure), mtpview:::vars(run, plate))
+                     mtpview::mtp_plot(dplyr::rename(d, x = runtime, y = measure), mtpview:::vars(run, plate))
                  })
                  ),
-        tabPanel("data", 
+        tabPanel("data",
                  renderTable(({head(d)}))
                  ),
         tabPanel('download',
@@ -76,7 +76,7 @@ mutli_run_view <- function(d) {
          mtp_plot(d, vars(run, plate))
      })
  )
- 
+
 }
 
 box_plate <- function(d) {
@@ -87,7 +87,7 @@ box_plate <- function(d) {
         title = title,
         width  = 6,
         renderPlot({
-            mtp_auto(dplyr::rename(d, x = runtime, y = measure), draw = TRUE)
+            mtpview::mtp_auto(dplyr::rename(d, x = runtime, y = measure), draw = TRUE)
         })
     )
 }

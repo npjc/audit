@@ -1,6 +1,3 @@
-library(growr)
-library(shinyalert)
-
 # UI ----------------------------------------------------------------------
 
 preprocessTabContentsUI <- function(id, label = NULL) {
@@ -35,7 +32,7 @@ preprocessTabContentsUI <- function(id, label = NULL) {
         plotOutput(ns("preview"))
     )
 
-    tagList(useShinyalert(), input_box, tbl_box, preview_box)
+    tagList(shinyalert::useShinyalert(), input_box, tbl_box, preview_box)
 
 }
 
@@ -57,7 +54,7 @@ preprocessTabContents <- function(input, output, session, datafile) {
         out <- dplyr::mutate(out, measures_pp = preprocessFxn()(measure))
         out <- dplyr::ungroup(out)
         outputData(out)
-        shinyalert(text = 'applied preprocesssing to experiment.',type = 'success')
+        shinyalert::shinyalert(text = 'applied preprocesssing to experiment.',type = 'success')
     }, ignoreNULL = TRUE, ignoreInit = TRUE)
 
     distinctWells <- reactive({
@@ -165,7 +162,7 @@ preprocess_message <- function(log_base,
     }
 
     msg <- paste0(msg, collapse = '\n')
-    HTML(msg)
+    shiny::HTML(msg)
 }
 
 
@@ -296,7 +293,7 @@ logInfoAlert <- function() {
 
 InfoAlert <- function(title, htmltext) {
 
-    shinyalert(title = title,
+    shinyalert::shinyalert(title = title,
                text = htmltext,
                type = "info",
                closeOnClickOutside = TRUE,
