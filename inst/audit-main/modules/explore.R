@@ -52,18 +52,27 @@ exploreContentsUI <- function(id) {
 exploreContents <- function(input, output, session, summary) {
 
     modelData <- reactive({
+        validate(
+            need(!is.null(summary()), 'Need preprocessed and summarised data.')
+        )
         d <- summary()
         d <- dplyr::select(d, -components, -observations)
         d <- tidyr::unnest(d, cols = c(model))
     })
 
     componentsData <- reactive({
+        validate(
+            need(!is.null(summary()), 'Need preprocessed and summarised data.')
+        )
         d <- summary()
         d <- dplyr::select(d, -model, -observations)
         d <- tidyr::unnest(d, cols = c(components))
     })
 
     observationsData <- reactive({
+        validate(
+            need(!is.null(summary()), 'Need preprocessed and summarised data.')
+        )
         d <- summary()
         d <- dplyr::select(d, -model, -components)
         d <- tidyr::unnest(d, cols = c(observations))

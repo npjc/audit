@@ -24,6 +24,9 @@ downloadObj <- function(input, output, session, data, slug) {
     )
 
     output$glimpse <- renderText({
+        validate(
+            need(!is.null(data()), 'Need preprocessed and summarised data.')
+        )
         paste0(capture.output(dplyr::glimpse(data(), width = 40)), collapse = '\n')
     })
 }

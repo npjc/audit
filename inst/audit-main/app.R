@@ -102,11 +102,17 @@ server <- function(input, output, session) {
     summarised <- callModule(summariseTabContents, 'summarised', preprocess)
 
     model_data <- reactive({
+        validate(
+            need(!is.null(summarised()), 'Need preprocessed and summarised data.')
+        )
         d <- summarised()
         d <- dplyr::select(d, -components, -observations)
         d <- tidyr::unnest(d, cols = c(model))
     })
     components_data <- reactive({
+        validate(
+            need(!is.null(summarised()), 'Need preprocessed and summarised data.')
+        )
         d <- summarised()
         d <- dplyr::select(d, -model, -observations)
         d <- tidyr::unnest(d, cols = c(components))
