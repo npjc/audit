@@ -13,7 +13,7 @@ Depends: R (>= 3.6.0)
 Imports: 
     shiny (>= 1.4.0),
     shinydashboard (>= 0.7.1),
-    plater  (>= 1.0.1),
+    plater (>= 1.0.1),
     ggplot2 (>= 3.2.1),
     shinyalert (>= 1.0),
     mtpview1 (>= 0.0.2),
@@ -22,8 +22,8 @@ Imports:
     readyg (>= 0.1.0),
     readbioscreen (>= 0.1.1),
     mtpview (>= 0.1.0),
-    growr (>= 0.2.0),
-    DT  (>= 0.9),
+    growr (>= 0.2.1),
+    DT (>= 0.9),
     tidyr (>= 1.0.0),
     mtputils (>= 0.1.1),
     dplyr (>= 0.8.3),
@@ -33,7 +33,8 @@ Imports:
     crayon (>= 1.3.4),
     glue (>= 1.3.1),
     tibble (>= 2.1.3),
-    purrr  (>= 0.3.3)
+    purrr (>= 0.3.3),
+    markdown
 Remotes: 
     npjc/readcg12,
     npjc/readgp1,

@@ -2,6 +2,7 @@
 
 ## CRAN dependencies
 library(shiny)
+library(markdown) # shiny::includeMarkdown uses markdown::markdownToHTML() but shiny only suggests markdown pkg
 library(shinydashboard)
 library(plater)
 library(ggplot2)

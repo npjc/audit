@@ -3,14 +3,16 @@
 autoFileInput <- function(id) {
     ns <- NS(id)
     tagList(
-        filesInput(ns("files")),
-        p("or load example data: ",
-            actionLink(ns("exampleDataLink_cs1"), "case study 1"), ",",
-            actionLink(ns("exampleDataLink_cg12"), "cg12"), ",",
-            actionLink(ns("exampleDataLink_gp1"), "gp1"), ",",
-            actionLink(ns("exampleDataLink_yg"), "yg"), ",",
-            actionLink(ns("exampleDataLink_bs"), "bioscreen")
-        ),
+        fluidRow(column(6,
+               filesInput(ns("files")),
+               p("or load example data: ",
+                 actionLink(ns("exampleDataLink_cs1"), "case study 1"), ",",
+                 actionLink(ns("exampleDataLink_cg12"), "cg12"), ",",
+                 actionLink(ns("exampleDataLink_gp1"), "gp1"), ",",
+                 actionLink(ns("exampleDataLink_yg"), "yg"), ",",
+                 actionLink(ns("exampleDataLink_bs"), "bioscreen")
+               )),
+        column(6, timeUnitInput(ns("timeUnit")))),
         # verbatimTextOutput(ns("egData")),
         shiny::tags$div(style = 'height: 230px; overflow-y: scroll', uiOutput(ns("messages")))
         )
@@ -25,6 +27,7 @@ autoFile <- function(input, output, session) {
     inputFiles <- reactiveVal(value = NULL)
 
     observeEvent(input$filesInfo, filesInfoAlert())
+    observeEvent(input$timeUnitInfo, timeUnitInfoAlert())
 
     # inputFiles <- reactive({
     #     validate(need(input$files, message = 'start by uploading file(s)')) # If no files do nothing
@@ -112,6 +115,15 @@ autoFile <- function(input, output, session) {
         out
     })
 
+    datafile_converted <- reactive({
+        runtime_scaler <- switch (input$timeUnit,
+            "seconds" = 1,
+            "minutes" = 1/60,
+            "hours" = 1/3600
+        )
+        dplyr::mutate(datafile(), runtime = runtime * runtime_scaler)
+    })
+
     # output$egData <- renderText({
     #     # # file.path('docs','estimationMethodInfo.md')
     #     # files <- list.files("example-data", full.names = TRUE)
@@ -129,7 +141,7 @@ autoFile <- function(input, output, session) {
         tagList(purrr::pmap(d, upload_message))
     })
 
-    return(datafile)
+    return(datafile_converted)
 }
 
 
@@ -338,6 +350,15 @@ filesInput <- function(inputId) {
     fileInput(inputId, label = lbl, multiple = TRUE)
 }
 
+timeUnitInput <- function(inputId) {
+    lbl <- action_link_lbl(inputId = paste0(inputId, 'Info'),
+                           label = 'Runtime Units')
+    shiny::selectInput(inputId,
+                       label = lbl,
+                       multiple = FALSE,
+                       choices = c("seconds", "minutes", "hours"))
+}
+
 # styled action link for use in input label
 action_link_lbl <- function(inputId, label) {
     labelList <- tagList(
@@ -348,16 +369,23 @@ action_link_lbl <- function(inputId, label) {
     actionLink(inputId, label = labelList)
 }
 
-
 filesInfoAlert <- function() {
+    # fxn uses: markdown::markdownToHTML() but shiny only suggests markdown pkg
     h <- shiny::includeMarkdown(file.path('docs','filesInfo.md'))
 
     InfoAlert("Measures & Design Data", h)
 }
 
+timeUnitInfoAlert <- function() {
+    # fxn uses: markdown::markdownToHTML() but shiny only suggests markdown pkg
+    h <- shiny::includeMarkdown(file.path('docs','timeUnit.md'))
+
+    InfoAlert("Runtime Units", h)
+}
+
 InfoAlert <- function(title, htmltext) {
 
-    shinyalert(title = title,
+    shinyalert::shinyalert(title = title,
                text = htmltext,
                type = "info",
                closeOnClickOutside = TRUE,
