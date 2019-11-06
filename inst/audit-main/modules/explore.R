@@ -36,7 +36,16 @@ exploreContentsUI <- function(id) {
 
     )
 
-    tagList(expt_glance_box, grouping_box)
+    qc_box <- box(width = 12,
+                  title = tagList(span(icon("thermometer"), style = 'opacity:0.3;'), span("Tempeature Check")),
+                  fileInput(ns("temperatureFile"),
+                            label = 'Upload a file with temperature data',
+                            multiple = FALSE),
+
+                  plotOutput(ns("temperaturePlot"))
+                  )
+
+    tagList(expt_glance_box, grouping_box, qc_box)
 
 }
 
@@ -198,6 +207,25 @@ exploreContents <- function(input, output, session, summary) {
             scale_alpha_manual(values = c(1, 0.3)) +
             labs(x = "Runtime", y = "Fitted Values (Measures)") +
             guides(lty = FALSE, alpha = FALSE)
+    })
+
+    # temperature QC
+
+    output$temperaturePlot <- renderPlot({
+        validate(need(input$temperatureFile, "must upload a file."))
+        l <- read_yg(input$temperatureFile$datapath, all_fields = TRUE)
+        d <- dplyr::distinct(d$data[[1]], runtime, temperature)
+        temp_range <- range(d$temperature)
+        expand_y <- c(0.05,0.05)
+        if (abs(temp_range[2] - temp_range[1]) < 1)
+            expand_y = c(1,1)
+
+        d %>%
+            ggplot(aes(x = runtime, y = temperature)) +
+            geom_point(size = 0.5) +
+            geom_line() +
+            scale_y_continuous(expand = expand_y) +
+            theme_bw()
     })
 }
 

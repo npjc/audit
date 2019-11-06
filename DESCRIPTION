@@ -1,6 +1,6 @@
 Package: audit
 Title: Shiny Application to Help Audit Your Growth Curves
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Nicolas", "Coutin", , "nicolas.coutin@gmail.com", c("aut", "cre"), comment = c(ORCID = "0000-0001-9336-226X"))
 Maintainer: Nicolas Coutin <nicolas.coutin@gmail.com>
 Description: This package provides a shiny application that ushers you through 
@@ -16,7 +16,7 @@ Imports:
     plater (>= 1.0.1),
     ggplot2 (>= 3.2.1),
     shinyalert (>= 1.0),
-    mtpview1 (>= 0.0.2),
+    mtpview1 (>= 0.0.3),
     readcg12 (>= 0.1.0),
     readgp1 (>= 0.2.0),
     readyg (>= 0.1.0),
